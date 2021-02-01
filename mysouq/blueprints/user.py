@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, session, flash, url_for
 from mysouq.models.user import User
-from mysouq.models.item import Item
+from mysouq.models.item import Item, Category
 from mysouq.forms.user_forms import LoginForm, SignUpForm, ChangePasswordForm, EditProfileForm
+from mysouq.forms.item_forms import AddCategoryForm, AddItemForm, EditItemForm
 from mysouq.models.requests import UpgradeRequest
 from functools import wraps
 
@@ -214,3 +215,41 @@ def request_upgrade():
         flash("You have already requested an upgrade.")
 
     return redirect(url_for('user.profile'))
+
+
+
+@user_bp.route('/favorites_list', methods=['GET', 'POST'])
+@login_required
+def view_favorites():
+
+    favorite_items = User.objects(id = session['user']['id']).get().favorites_list
+    
+    items = []
+
+    for i in range(0, len(favorite_items)):
+
+        item = Item.objects(id = favorite_items[i]).first()
+        items.append(item)
+           
+    return render_template("user/favorites_list.html", items = items)
+
+
+@user_bp.route('/add_category', methods=['GET', 'POST'])
+# @login_required
+def add_category():
+
+    add_category_form = AddCategoryForm()
+
+    if add_category_form.validate_on_submit():
+
+
+        category_value = add_category_form.value.data
+        category_label = add_category_form.label.data
+
+        new_category = Category( value = category_value, label = category_label)
+
+        new_category.save()
+        
+        return redirect(url_for("user.profile"))
+
+    return render_template("user/add_category.html", form = add_category_form)

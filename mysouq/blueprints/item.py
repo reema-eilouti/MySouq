@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session, flash, url_for
 from mysouq.models.user import User
-from mysouq.models.item import Item
+from mysouq.models.item import Item, Category
 from mysouq.models.requests import BuyRequest
 from mysouq.forms.item_forms import AddItemForm, EditItemForm
 
@@ -11,6 +11,10 @@ item_bp = Blueprint('item', __name__)
 def add_item():
 
     add_item_form = AddItemForm()
+
+    categories = Category.objects()
+
+    add_item_form.category.choices = [(category.value, category.label) for category in categories]
 
     if add_item_form.validate_on_submit():
 
@@ -35,6 +39,11 @@ def edit_item(item_id):
 
     edit_item_form = EditItemForm()
 
+    categories = Category.objects()
+
+    edit_item_form.category.choices = [(category.value, category.label) for category in categories]
+
+
     item = Item.objects(id = item_id).first()
 
     if request.method == "GET":
@@ -57,6 +66,7 @@ def edit_item(item_id):
         flash("Your item has been edited successfully.")
 
         return redirect(url_for('user.home'))
+
 
     return render_template("item/edit_item.html", form = edit_item_form)    
 

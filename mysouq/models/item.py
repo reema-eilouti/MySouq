@@ -13,3 +13,11 @@ class Item(Document):
     category = StringField(required = True)
     hidden = BooleanField(default = False)
     buy_requests_list = ListField(StringField())
+
+
+class Category(Document):
+
+    meta = {'collection' : 'Categories'}
+
+    value = StringField(required = True)
+    label = StringField(required = True)

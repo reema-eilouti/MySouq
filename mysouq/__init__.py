@@ -40,6 +40,15 @@ def create_app(test_config=None):
         item_3 = Item(title = "Third", description = 'First', date = "2011-12-30 14:09:01", price = "4" , category = "clothes").save()
         
 
+
+        category_1 = Category(value = '1', label = 'Clothes').save()
+
+        category_2 = Category(value = '2', label = 'Vehicles').save()
+        
+        category_3 = Category(value = '3', label = 'Digital Devices').save()
+
+
+
         return "Database Initialized Successfully."
 
 
