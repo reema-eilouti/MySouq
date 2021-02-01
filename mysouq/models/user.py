@@ -6,7 +6,7 @@ class User(Document):
     meta = {'Collection': 'Users'}
 
     username = StringField(required = True)
-    birthdate = DateTimeField(required=True)
+    birthday = DateTimeField(required=True)
     email = EmailField(required=True)
     password = StringField(required=True)
     role = IntField(default = 0)
@@ -35,8 +35,9 @@ class User(Document):
             "id": str(self.pk),
             'username': self.username,
             'email': self.email,
+            'birthday': self.birthday,
             'role': self.role,
             'disable': self.disable,
-            'favorite': self.favorite            
+            'favorites': self.favorites_list            
         }
         return serialized

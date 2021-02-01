@@ -1,7 +1,4 @@
-print(f'Invoking __init__.py for {__name__}')
-
 import os
-
 from flask import Flask
 from mongoengine import *
 from mysouq.models import *
@@ -25,32 +22,21 @@ def create_app(test_config=None):
         authentication_source='admin'
     )
 
-    # define our collections
-    # users = mongo.mysouq.users
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, world!'
-
-    @app.route('init-db')
+    @app.route('/init-db')
     def init_db():
 
-        user_2 = User(username='reema_95',password = '1234', first_name='Reema', last_name='Eilouti').save()
+        common_password = pbkdf2_sha256.hash('1234')
 
+        user_1 = User(username='admin', password = pbkdf2_sha256.hash('1234') , birthday = "2009-12-30 14:09:01" , email = 'aaa@gmail.com' , role = 2 ).save()
+
+        user_2 = User(username='hamza_96',password = common_password , birthday = "2009-12-30 14:09:01" , email = 'aaa@gmail.com' , role = 0 ).save()
+        
         return "Database initialized"
 
-
-    # register the 'post' blueprint
-    from .blueprints.post import post_bp
-    app.register_blueprint(post_bp)
 
     # register the 'user' blueprint
     from .blueprints.user import user_bp
     app.register_blueprint(user_bp)
-
-    # register the 'login' blueprint
-    from .blueprints.login import login_bp
-    app.register_blueprint(login_bp)
 
     return app

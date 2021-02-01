@@ -8,7 +8,7 @@ class SignUpForm(FlaskForm):
     username = StringField("Username: ", [validators.InputRequired()])
     password = PasswordField("Password: ", [validators.InputRequired()])
     email = EmailField("Email: ", [validators.InputRequired()])
-    birthday = DateField("Brithday: ", [validators.InputRequired()], format='%Y-%m-%d')
+    birthday = DateField("Birthday: ", [validators.InputRequired()], format='%Y-%m-%d')
     submit = SubmitField("SignUp")    
 
 
@@ -28,5 +28,5 @@ class ChangePasswordForm(FlaskForm):
 class EditProfileForm(FlaskForm):
     username = StringField("Username: ", [validators.InputRequired()])
     email = EmailField("Email: ", [validators.InputRequired()])
-    birthday = DateField("Brithday: ", [validators.InputRequired()], format='%Y-%m-%d')
+    birthday = DateField("Birthday: ", [validators.InputRequired()], format='%Y-%m-%d')
     submit = SubmitField("Update Profile") 

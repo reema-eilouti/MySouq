@@ -23,13 +23,18 @@
       {{form.hidden_tag()}}
    
       <div class="row my-3">
-        {{form.new_first_name.label(class_="form-label")}}
-        {{form.new_first_name(class_="form-control")}}
+        {{form.username.label(class_="form-label")}}
+        {{form.username(class_="form-control")}}
       </div>
 
       <div class="row my-3">
-        {{form.new_last_name.label(class_="form-label")}}
-        {{form.new_last_name(class_="form-control")}}
+        {{form.email.label(class_="form-label")}}
+        {{form.email(class_="form-control")}}
+      </div>
+
+      <div class="row my-3">
+        {{form.birthday.label(class_="form-label")}}
+        {{form.birthday(class_="form-control")}}
       </div>
 
       <hr class="mb-4" />
