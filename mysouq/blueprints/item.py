@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, session, flash, url_for
 from mysouq.models.user import User
 from mysouq.models.item import Item
-from mysouq.models.requests import BuyRequest, UpgradeRequest
+from mysouq.models.requests import BuyRequest
 from mysouq.forms.item_forms import AddItemForm, EditItemForm
 
 item_bp = Blueprint('item', __name__)
@@ -91,6 +91,7 @@ def search_items():
     if request.method == 'POST':
         
         search_keyword = str(request.form['search_keyword'])  
+
         results = Item.objects.search_text(search_keyword).order_by('$text_score')
         
         return render_template("item/search-result.html", items = results, search_keyword = search_keyword)  
@@ -99,7 +100,7 @@ def search_items():
 @item_bp.route('/item/<item_id>/add_favorite')
 def add_favorite(item_id):
 
-    User.objects(id = session['user']['id']).update_one(add_to_set__favorite = item_id)
+    User.objects(id = session['user']['id']).update_one(add_to_set__favorites_list = item_id)
 
     flash("Added To Favorites")
 
@@ -109,14 +110,17 @@ def add_favorite(item_id):
 @item_bp.route('/item/<item_id>/buy')
 def buy_item(item_id):
 
-    buy_request = BuyRequest(user = session['user']['id'], item = item_id, status = 'Pending')
+    request = BuyRequest.objects(user = session['user']['id'], item = item_id).first()
 
-    buy_request.save()
-    
-    buy_requests = BuyRequest.objects(item = item_id)
+    if not request:
 
-    print(buy_requests)
-    
-    Item.objects(id = item_id).update_one(add_to_set__buy_request_list = buy_request.id)
+        buy_request = BuyRequest(user = session['user']['id'], item = item_id, status = 'Pending')
 
-    return redirect(url_for('user.home', buy_requests = buy_requests))
+        buy_request.save()
+        
+        Item.objects(id = item_id).update_one(add_to_set__buy_requests_list = buy_request.id)
+
+    else:
+        flash("Item already in you Buy-Requests.")
+
+    return redirect(url_for('user.home'))

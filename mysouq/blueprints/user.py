@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, session, flash,
 from mysouq.models.user import User
 from mysouq.models.item import Item
 from mysouq.forms.user_forms import LoginForm, SignUpForm, ChangePasswordForm, EditProfileForm
+from mysouq.models.requests import UpgradeRequest
 from functools import wraps
 
 

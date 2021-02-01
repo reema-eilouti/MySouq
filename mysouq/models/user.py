@@ -3,7 +3,7 @@ from passlib.hash import pbkdf2_sha256
 
 class User(Document):
 
-    meta = {'Collection': 'Users'}
+    meta = {'collection': 'Users'}
 
     username = StringField(required = True)
     birthday = DateTimeField(required=True)

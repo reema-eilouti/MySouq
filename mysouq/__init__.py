@@ -26,25 +26,29 @@ def create_app(test_config=None):
     @app.route('/init-db')
     def init_db():
 
-        common_password = pbkdf2_sha256.hash('1234')
+        user_1 = User(username='admin', password = pbkdf2_sha256.hash('1234'), birthday = "1990-01-01 14:09:01", email = 'admin@gmail.com', role = 2 ).save()
 
-        user_1 = User(username='admin', password = pbkdf2_sha256.hash('1234') , birthday = "2009-12-30 14:09:01" , email = 'aaa@gmail.com' , role = 2 ).save()
+        user_2 = User(username='reema_95', password = pbkdf2_sha256.hash('1234'), birthday = "1995-10-06 14:09:01", email = 'reema@gmail.com', role = 0 ).save()
 
-        user_2 = User(username='hamza_96',password = common_password , birthday = "2009-12-30 14:09:01" , email = 'aaa@gmail.com' , role = 0 ).save()
+        user_3 = User(username='salma_93', password = pbkdf2_sha256.hash('1234'), birthday = "1993-07-23 14:09:01", email = 'salma@gmail.com', role = 1 ).save()
         
 
-        item_1 = Item(title = "First", description = 'First' ,date = "2009-12-30 14:09:01", price = "0" , category = "clothes").save()
+        item_1 = Item(title = "First", description = 'First', date = "2009-12-30 14:09:01", price = "5" , category = "clothes").save()
 
-        item_2 = Item(title = "Sec" , description = 'First' ,date = "2020-12-30 14:09:01", price = "0" , category = "clothes").save()
+        item_2 = Item(title = "Sec" , description = 'First', date = "2020-12-30 14:09:01", price = "8" , category = "clothes").save()
 
-        item_3 = Item(title = "Third", description = 'First' ,date = "2011-12-30 14:09:01", price = "0" , category = "clothes").save()
+        item_3 = Item(title = "Third", description = 'First', date = "2011-12-30 14:09:01", price = "4" , category = "clothes").save()
         
 
-        return "Database initialized"
+        return "Database Initialized Successfully."
 
 
     # register the 'user' blueprint
     from .blueprints.user import user_bp
     app.register_blueprint(user_bp)
+
+    # register the 'item' blueprint
+    from .blueprints.item import item_bp
+    app.register_blueprint(item_bp)
 
     return app
