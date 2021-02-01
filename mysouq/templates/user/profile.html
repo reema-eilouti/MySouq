@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+
+{% block main %}
+
+
+<center>
+    <a href="{{url_for('user.edit_profile')}}"> <button type="button" class="btn btn-primary">Edit Profile</button></a>
+    <a href="{{url_for('user.change_password')}}"><button type="button" class="btn btn-primary">Change Password</button></a>
+    <a href="{{url_for('user.request_upgrade')}}"><button type="button" class="btn btn-primary">Request Upgrade</button></a>
+    <br> <br>
+
+    <div class="card" style="width: 18rem;">
+        <img src="../../static/images/136.png" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">HRD-Souq</h5>
+            <p class="card-text">Your Profile Details.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">username: {{user.username}}</li>
+            <li class="list-group-item">Email: {{user.email}}</li>
+            <li class="list-group-item">Birthday: {{user.birthday}}</li>
+        </ul>
+
+    </div>
+</center>
+{% endblock %}

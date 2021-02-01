@@ -28,7 +28,7 @@ def disable_user(function):
     def check(*args, **kwargs):
 
         try:
-            if session['user']['disable'] == False :
+            if session['user']['disable'] == False:
                 return function(*args, **kwargs)
 
             else :
@@ -115,7 +115,6 @@ def login():
     return render_template('user/login.html', form = login_form)
 
 
-
 @user_bp.route('/logout')
 def logout():
 
@@ -128,6 +127,15 @@ def logout():
 def show_session():
     return dict(session)
 
+
+
+@user_bp.route('/profile', methods=['POST', 'GET'])
+@login_required
+def profile():
+
+    user = User.objects(id = session["user"]['id']).first()
+
+    return render_template("user/profile.html", user = user)
 
 
 @user_bp.route('/edit_profile', methods=['POST', 'GET'])
@@ -187,3 +195,22 @@ def change_password():
             return redirect(url_for('user.change_password'))
 
     return render_template("user/change_password.html", form=change_password_form)
+
+
+@user_bp.route('/request_upgrade', methods=['GET', 'POST'])
+@login_required
+def request_upgrade():
+
+    request = UpgradeRequest.objects(user = session['user']['id']).first()
+
+    if not request:
+
+        upgrade_request = UpgradeRequest(user = session['user']['id'], status = "Pending")
+
+        upgrade_request.save()
+
+    else:
+
+        flash("You have already requested an upgrade.")
+
+    return redirect(url_for('user.profile'))
