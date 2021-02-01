@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Item{% endblock %}
+
+{% block main %}
+
+<center>
+<div>
+  <div class="col-lg-4 col-md-6 col-sm-12">
+    <h1>
+      Add Item
+    </h1>
+  </div>
+</div>
+
+
+<div id="b1">
+  <div class="col-lg-4 col-md-6 col-sm-12">
+    <form method="POST" action="">
+      {{form.hidden_tag()}}
+      <div class="row my-3">
+        {{form.title.label(class_="form-label")}}
+        {{form.title(class_="form-control")}}
+      </div>
+      <div class="row my-3">
+        {{form.description.label(class_="form-label")}}
+        {{form.description(class_="form-control")}}
+      </div>
+      <div class="row my-3">
+        {{form.price.label(class_="form-label")}}
+        {{form.price(class_="form-control")}}
+      </div>
+      <div class="row my-3">
+        {{form.category.label(class_="form-label")}}
+        {{form.category(class_="form-control")}}
+      </div>
+
+      <hr class="mb-4" />
+      {{form.submit(class_="form-control bg-dark text-light")}}
+      
+    </form>
+
+  </div>
+</div>
+</center>
+
+{% endblock %}

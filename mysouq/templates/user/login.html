@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block main %}
+
+<center>
+<div>
+  <div class="col-lg-4 col-md-6 col-sm-12">
+    <h1>
+      Login
+    </h1>
+  </div>
+</div>
+
+
+<div id="b1">
+  <div class="col-lg-4 col-md-6 col-sm-12">
+    <form method="POST" action="">
+      {{form.hidden_tag()}}
+      <div class="row my-3">
+        {{form.username.label(class_="form-label", for_="username")}}
+        {{form.username(id_="username", class_="form-control")}}
+      </div>
+      <div class="row my-3">
+        {{form.password.label(class_="form-label", for_="password")}}
+        {{form.password(id_="username", class_="form-control")}}
+      </div>
+
+      <hr class="mb-4" />
+      {{form.submit(class_="form-control bg-dark text-light")}}
+      <h6><strong>Don't have an account ?</strong><a href="{{url_for('signup.signup')}}"> Sign Up</a> </h6>
+    </form>
+
+  </div>
+</div>
+</center>
+
+{% endblock %}
