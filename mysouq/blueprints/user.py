@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, session, flash, url_for
 from mysouq.models.user import User
+from mysouq.models.item import Item
 from mysouq.forms.user_forms import LoginForm, SignUpForm, ChangePasswordForm, EditProfileForm
 from functools import wraps
 
@@ -21,29 +22,37 @@ def login_required(function):
     return check_required
 
 
-# def disable_user(function):
-#     @wraps(function)
-#     def check(*args, **kwargs):
+def disable_user(function):
+    @wraps(function)
+    def check(*args, **kwargs):
 
-#         if session['user']['disable'] == False:
-#             return function(*args, **kwargs)
+        try:
+            if session['user']['disable'] == False :
+                return function(*args, **kwargs)
 
-#         else:
-#             return render_template('user/disable.html')
-#     return check
+            else :
+                return render_template('user/disable.html')
+        except:
+            return render_template('user/disable.html')
+    
+    return check
 
 
-# def maintenance(function):
-#     @wraps(function)
-#     def check(*args, **kwargs):
+def maintenance(function):
+    @wraps(function)
+    def check(*args, **kwargs):
 
-#         if session['user']['maintenance'] == False:
-#             return function(*args, **kwargs)
+        try:
+            if session['user']['maintenance'] == False:
+                return function(*args, **kwargs)
 
-#         else:
-#             return render_template('user/maintenance.html')
-#     return check
+            else :
+                return render_template('user/maintenance.html')
 
+        except:
+            return render_template('user/maintenance.html')
+    
+    return check
 
 
 
@@ -53,7 +62,7 @@ def home():
 
     items = Item.objects()
 
-    return render_template('base.html' items = items)
+    return render_template('base.html', items = items)
 
 
 @user_bp.route("/signup", methods = ['POST', 'GET'])
