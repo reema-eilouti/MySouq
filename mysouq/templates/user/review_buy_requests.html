@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Buy Requests{% endblock %}
+
+
+{% block main %}
+
+
+{% for item_requests in my_buy_requests  %}
+{% for request in item_requests %}
+
+<div class="row my-1 justify-content-between">
+  <div class="col-lg-10 col-md-12 col-sm-12 align-self-center">
+    <div class="col-4">
+      <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="../../static/images/haha.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">
+            <h5><b>HRD-Souq.com</b></h5>
+          </h5>
+          <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+          <p class="card-text">
+          <h5><b>Title : </b>{{request.user.username}}</h5>
+          <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+          <h5><b>Description : </b>{{request.item.title}}</h5>
+          <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+          <h5><b>Price : </b> {{request.item.price}} JDs </h5>
+          <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+          </p>
+          <a href="#" class="btn btn-primary text-white">Approve</a>
+          <a href="#" class="btn btn-danger text-white">Decline</a>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
+{% endfor %}
+{% endfor %}
+
+
+{% endblock %}

@@ -50,7 +50,7 @@ def check_maintenance(function):
 
 @user_bp.route('/', methods=['POST', 'GET'])
 @user_bp.route('/home', methods=['POST', 'GET'])
-@check_maintenance 
+# @check_maintenance 
 def home():
 
     items = Item.objects()
@@ -261,9 +261,9 @@ def add_category():
 
 
 @user_bp.route('/display_users', methods=['POST', 'GET'])
-# @login_required
-# @check_disable
-# @check_maintenance
+@login_required
+@check_disable
+@check_maintenance
 def display_users():
 
     users = User.objects()
@@ -366,3 +366,26 @@ def buy_requests():
     requests_list = BuyRequest.objects(user = session['user']['id'])
 
     return render_template('user/buy_requests.html', requests_list = requests_list)
+
+
+@user_bp.route('/review_buy_requests', methods=['POST', 'GET'])
+# @login_required
+@check_disable
+@check_maintenance 
+def review_buy_requests():
+
+    current_user = User.objects(id = session['user']['id']).first()
+
+    my_items = Item.objects(user = current_user)
+
+    print(my_items)
+    
+    my_buy_requests = []
+
+    for item in my_items:
+            
+        my_buy_requests.append(BuyRequest.objects(item = item))
+
+    print(my_buy_requests)
+
+    return render_template("user/review_buy_requests.html", my_buy_requests = my_buy_requests)

@@ -58,7 +58,9 @@
                     </li>
                     {% endif %}
                 </ul>
+
             </div>
+
         </nav>
     </header>
 
@@ -75,14 +77,24 @@
             {% endfor %}
         </section>
 
+        
+
         <section class="container">
             {% block main %}
+
+            <center>
+                <form action="{{ url_for('item.search_items') }}" method="POST">
+                    <input class="form-control form-control-lg" type="search" name="search_keyword" style="width: 25%;"
+                        placeholder=" Enter Keywords To Search" aria-label="Search"><button
+                        class="btn btn-secondary mt-1">Search </button>
+                </form>
+            </center>
 
             {% for item in items %}
             <div class="card" style="width: 18rem;">
 
                 <ol class="mr-5">
-                    <a href="{{url_for('item.add_favorite', item_id = item.id)}}"><i class="fas fa-star"
+                    <a href="{{url_for('item.add_favorite', item_id = item.id)}}"><i style="color: grey;" class="fas fa-star"
                             title="Favorite"></i></a>
                     <a href="{{url_for('item.edit_item', item_id = item.id)}}"><i class="far fa-edit"
                             title="Edit"></i></a>
@@ -113,8 +125,7 @@
                     </p>
 
                     {% if item %}
-                    <a href="{{url_for('item.buy_item', item_id = item.id)}}"
-                        class="btn btn-primary text-white">Buy</a>
+                    <a href="{{url_for('item.buy_item', item_id = item.id)}}" class="btn btn-secondary text-white">Buy</a>
                     {% else %}
                     <a class="btn btn-primary text-white disabled">Buy</a>
                     {% endif %}

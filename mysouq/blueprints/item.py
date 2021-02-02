@@ -23,7 +23,7 @@ def add_item():
         price = add_item_form.price.data
         category = add_item_form.category.data
 
-        item = Item(title = title, description = description, price = price, category = category)
+        item = Item(user = session['user']['id'], title = title, description = description, price = price, category = category)
         
         item.save()
 
@@ -103,7 +103,7 @@ def search_items():
 
         results = Item.objects.search_text(search_keyword).order_by('$text_score')
         
-        return render_template("item/search-result.html", items = results, search_keyword = search_keyword)  
+        return render_template("item/searched_items.html", items = results, search_keyword = search_keyword)  
 
 
 @item_bp.route('/item/<item_id>/add_favorite')
@@ -128,6 +128,8 @@ def buy_item(item_id):
         buy_request.save()
         
         Item.objects(id = item_id).update_one(add_to_set__buy_requests_list = buy_request.id)
+
+        flash("A Buy Request has been sent to the item seller.")
 
     else:
         flash("Item already in you Buy-Requests.")

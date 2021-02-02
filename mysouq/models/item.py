@@ -1,10 +1,18 @@
 from mongoengine import *
 from datetime import datetime
+from .user import User
 
 class Item(Document):
 
-    meta = {'collection' : 'Items'}
+    meta = {'collection' : 'Items',
+             'indexes': [
+                {'fields': ['$title', '$description'],
+                 'default_language': 'english',
+                 'weights': {'title': 2, 'description': 1}
+                 }
+            ]}
 
+    user = ReferenceField(User)
     title = StringField(required = True)
     description = StringField(required = True)
     date = DateTimeField(default = datetime.now())
