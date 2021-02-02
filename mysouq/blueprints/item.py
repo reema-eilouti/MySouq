@@ -43,7 +43,6 @@ def edit_item(item_id):
 
     edit_item_form.category.choices = [(category.value, category.label) for category in categories]
 
-
     item = Item.objects(id = item_id).first()
 
     if request.method == "GET":
