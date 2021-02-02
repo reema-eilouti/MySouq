@@ -27,7 +27,7 @@
           <h5><b>Price : </b> {{request.item.price}} JDs </h5>
           <hr style="height:2px;border-width:0;color:gray;background-color:gray">
           </p>
-          <a href="#" class="btn btn-primary text-white">Approve</a>
+          <a href="{{url_for('user.approve_buy_request' , item_id = request.item.id , request_id = request.id)}}" class="btn btn-primary text-white">Approve</a>
           <a href="#" class="btn btn-danger text-white">Decline</a>
           
         </div>

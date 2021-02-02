@@ -369,7 +369,7 @@ def buy_requests():
 
 
 @user_bp.route('/review_buy_requests', methods=['POST', 'GET'])
-# @login_required
+@login_required
 @check_disable
 @check_maintenance 
 def review_buy_requests():
@@ -377,8 +377,6 @@ def review_buy_requests():
     current_user = User.objects(id = session['user']['id']).first()
 
     my_items = Item.objects(user = current_user)
-
-    print(my_items)
     
     my_buy_requests = []
 
@@ -386,6 +384,25 @@ def review_buy_requests():
             
         my_buy_requests.append(BuyRequest.objects(item = item))
 
-    print(my_buy_requests)
-
     return render_template("user/review_buy_requests.html", my_buy_requests = my_buy_requests)
+
+
+
+@user_bp.route('/approve_buy_request/<item_id>/<request_id>', methods=['POST', 'GET'])
+# @login_required
+# @check_disable
+# @check_maintenance 
+def approve_buy_request(item_id, request_id):
+
+    item = Item.objects(id = item_id).first()
+    item.sold = True
+    Item.objects(id = item_id).update_one(unset__buy_requests_list = request_id)
+    item.save()
+
+    request = BuyRequest.objects(id = request_id).first()
+    request.status = "Approved"
+    request.save()
+
+    flash("Item has been sold!")
+    
+    return redirect(url_for('user.review_buy_requests'))
