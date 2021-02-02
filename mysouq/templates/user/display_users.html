@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Display Users{% endblock %}
+
+
+{% block main %}
+
+<center>
+    <br>
+    <div id="b1">
+        <div class="col-lg-10 col-md-6 col-lg">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{{users | count}} Users</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Delete-Block</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+
+
+                <th scope="row">{{loop.index}}</th>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+                <td>
+                    <a href="{{url_for('user.delete_user', user_id = user.id)}}"><i class="fas fa-user-times ml-4" title="Delete User"></i></a>
+                    <a href="{{url_for('user.disable_user', user_id = user.id)}}"> <i class="fas fa-user-slash" title="Disable User"></i></a>
+                </td>
+
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <a href="{{url_for('user.disable_list')}}"><button type="button" class="btn btn-primary">Disable List</button></a>
+
+   </div></div>
+</center>
+{% endblock %}

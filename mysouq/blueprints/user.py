@@ -3,7 +3,7 @@ from mysouq.models.user import User
 from mysouq.models.item import Item, Category
 from mysouq.forms.user_forms import LoginForm, SignUpForm, ChangePasswordForm, EditProfileForm
 from mysouq.forms.item_forms import AddCategoryForm, AddItemForm, EditItemForm
-from mysouq.models.requests import UpgradeRequest
+from mysouq.models.requests import UpgradeRequest, BuyRequest
 from functools import wraps
 
 
@@ -12,46 +12,36 @@ user_bp = Blueprint('user', __name__)
 
 def login_required(function):
     @wraps(function)
-    def check_required(*args, **kwargs):
+    def check(*args, **kwargs):
 
         try:
             session['user']['id']
             return function(*args, **kwargs)
-
         except:
             return redirect(url_for('user.login'))
 
-    return check_required
+    return check
 
 
-def disable_user(function):
+def check_disable(function):
     @wraps(function)
     def check(*args, **kwargs):
 
-        try:
-            if session['user']['disable'] == False:
-                return function(*args, **kwargs)
-
-            else :
-                return render_template('user/disable.html')
-        except:
-            return render_template('user/disable.html')
+        if session['user']['disable'] == False:
+            return function(*args, **kwargs)
+        else:
+            return render_template('user/disable.html')       
     
     return check
 
 
-def maintenance(function):
+def check_maintenance(function):
     @wraps(function)
     def check(*args, **kwargs):
 
-        try:
-            if session['user']['maintenance'] == False:
-                return function(*args, **kwargs)
-
-            else :
-                return render_template('user/maintenance.html')
-
-        except:
+        if session['user']['maintenance'] == False:
+            return function(*args, **kwargs)
+        else:
             return render_template('user/maintenance.html')
     
     return check
@@ -60,6 +50,7 @@ def maintenance(function):
 
 @user_bp.route('/', methods=['POST', 'GET'])
 @user_bp.route('/home', methods=['POST', 'GET'])
+@check_maintenance 
 def home():
 
     items = Item.objects()
@@ -132,6 +123,8 @@ def show_session():
 
 @user_bp.route('/profile', methods=['POST', 'GET'])
 @login_required
+@check_disable
+@check_maintenance
 def profile():
 
     user = User.objects(id = session["user"]['id']).first()
@@ -141,6 +134,8 @@ def profile():
 
 @user_bp.route('/edit_profile', methods=['POST', 'GET'])
 @login_required
+@check_disable
+@check_maintenance
 def edit_profile():
 
     user = User.objects(id = session['user']['id']).first()
@@ -175,6 +170,8 @@ def edit_profile():
 
 @user_bp.route('/change_password', methods=['GET', 'POST'])
 @login_required
+@check_disable
+@check_maintenance
 def change_password():
 
     user = User.objects(id=session['user']['id']).first()
@@ -200,6 +197,8 @@ def change_password():
 
 @user_bp.route('/request_upgrade', methods=['GET', 'POST'])
 @login_required
+@check_disable
+@check_maintenance
 def request_upgrade():
 
     request = UpgradeRequest.objects(user = session['user']['id']).first()
@@ -220,6 +219,8 @@ def request_upgrade():
 
 @user_bp.route('/favorites_list', methods=['GET', 'POST'])
 @login_required
+@check_disable
+@check_maintenance
 def view_favorites():
 
     favorite_items = User.objects(id = session['user']['id']).get().favorites_list
@@ -235,7 +236,9 @@ def view_favorites():
 
 
 @user_bp.route('/add_category', methods=['GET', 'POST'])
-# @login_required
+@login_required
+@check_disable
+@check_maintenance
 def add_category():
 
     add_category_form = AddCategoryForm()
@@ -253,3 +256,113 @@ def add_category():
         return redirect(url_for("user.profile"))
 
     return render_template("user/add_category.html", form = add_category_form)
+
+
+
+
+@user_bp.route('/display_users', methods=['POST', 'GET'])
+# @login_required
+# @check_disable
+# @check_maintenance
+def display_users():
+
+    users = User.objects()
+
+    return render_template('user/display_users.html', users = users)
+
+
+@user_bp.route('/delete_user/<user_id>', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance
+def delete_user(user_id):
+
+    user = User.objects(id = user_id).first()
+
+    user.delete()
+
+    flash(f"'{user.username}' account has been deleted.")
+
+    return redirect(url_for('user.display_users'))
+
+
+@user_bp.route('/disable_user/<user_id>', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance    
+def disable_user(user_id) :
+    
+    user = User.objects(id = user_id).first()
+    
+    user.disable = True
+
+    user.save()
+
+    flash(f"'{user.username}' account has been disabled.")
+
+    return redirect(url_for('user.display_users'))
+
+
+@user_bp.route('/unlock_user/<user_id>', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance    
+def unlock_user(user_id) :
+    
+    user = User.objects(id = user_id).first()
+    
+    user.disable = False
+
+    user.save()
+
+    flash(f"'{user.username}' account has been unlocked.")
+
+    return redirect(url_for('user.display_users'))
+
+
+@user_bp.route('/maintenance_mode', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance    
+def maintenance_mode() :
+
+    User.objects(role = 0 and 1).update(maintenance = True) 
+
+    flash('The website is currently under maintenance.')
+
+    return redirect(url_for('user.profile'))
+
+
+@user_bp.route('/maintenance_mode_off', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance    
+def maintenance_mode_off() :
+    
+    User.objects(role = 0 and 1).update(maintenance = False) 
+
+    flash('The website is back online!')
+    
+    return redirect(url_for('user.profile'))
+
+
+@user_bp.route('/disable_list', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance  
+def disable_list():
+
+    users = User.objects(disable = True)
+
+    return render_template('user/disable_list.html', users = users)
+    
+
+@user_bp.route('/buy_requests', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance 
+def buy_requests():
+
+    requests_list = BuyRequest.objects(user = session['user']['id'])
+
+    return render_template('user/buy_requests.html', requests_list = requests_list)

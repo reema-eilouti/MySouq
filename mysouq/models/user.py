@@ -11,7 +11,9 @@ class User(Document):
     password = StringField(required=True)
     role = IntField(default = 0)
     disable = BooleanField(default = False) 
+    maintenance = BooleanField(default = False)
     favorites_list = ListField(StringField())
+    
 
 
     def authenticate(self, username, password):
@@ -38,6 +40,7 @@ class User(Document):
             'birthday': self.birthday,
             'role': self.role,
             'disable': self.disable,
+            'maintenance': self.maintenance,
             'favorites': self.favorites_list            
         }
         return serialized

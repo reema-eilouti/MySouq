@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Buy Requests{% endblock %}
+
+
+{% block main %}
+
+<center>
+<br>
+
+    {% for request in requests_list %}
+  <div class="card" style="width: 18rem;">
+
+    <img class="card-img-top" src="../../static/images/logi.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">
+        <h5
+          style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+          <b> HRD-Souq</b></h5>
+      </h5>
+      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+      <p class="card-text">
+      <h5><b>Title : </b>{{request.item.title}}</h5>
+      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+      <h5><b>Description : </b>{{request.item.description}}</h5>
+      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+      <h5><b>Price : </b> {{request.item.price}} JDs </h5>
+      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+      <h5><b>Cateogory : </b> {{request.item.category}} </h5>
+      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+      <h5><b>Cateogory : </b> {{request.item.date}} </h5>
+      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+      </p>
+      
+
+    </div>
+  </div>
+  <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+  <br>
+  {% endfor %}
+
+
+    {% if not requests_list %}
+    <P>No Buy Requests, Do You Want To Buy Any Item?<a href="{{url_for('user.home')}}"> Buy Item</a> </P>
+    {% endif %}
+   </div></div>
+</center>
+{% endblock %}
