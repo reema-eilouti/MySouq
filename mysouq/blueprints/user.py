@@ -389,9 +389,9 @@ def review_buy_requests():
 
 
 @user_bp.route('/approve_buy_request/<item_id>/<request_id>', methods=['POST', 'GET'])
-# @login_required
-# @check_disable
-# @check_maintenance 
+@login_required
+@check_disable
+@check_maintenance 
 def approve_buy_request(item_id, request_id):
 
     item = Item.objects(id = item_id).first()
@@ -406,3 +406,84 @@ def approve_buy_request(item_id, request_id):
     flash("Item has been sold!")
     
     return redirect(url_for('user.review_buy_requests'))
+
+
+@user_bp.route('/decline_buy_request/<item_id>/<request_id>', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance 
+def decline_buy_request(item_id, request_id):
+
+    Item.objects(id = item_id).update_one(unset__buy_requests_list = request_id)
+    
+    request = BuyRequest.objects(id = request_id).first()
+    request.status = "Declined"
+    request.save()
+
+    flash("Buy Request has been declined!")
+    
+    return redirect(url_for('user.review_buy_requests'))
+
+
+
+@user_bp.route('/upgrade_request', methods=['POST', 'GET'])
+# @login_required
+@check_disable
+@check_maintenance 
+def upgrade_request():
+
+    upgrade_request = UpgradeRequest(user = session['user']['username'], status = "Pending")
+
+    upgrade_request.save()
+
+    flash("Upgrade Request has been sent.")
+
+    return redirect(url_for("user.profile"))
+
+
+
+@user_bp.route('/review_upgrade_requests', methods=['POST', 'GET'])
+# @login_required
+@check_disable
+@check_maintenance 
+def review_upgrade_requests():
+
+    
+    upgrade_requests = UpgradeRequest.objects()
+   
+
+    return render_template("user/review_upgrade_requests.html", upgrade_requests = upgrade_requests)
+
+
+@user_bp.route('/approve_upgrade_request/<request_id>', methods=['POST', 'GET'])
+# @login_required
+@check_disable
+@check_maintenance 
+def approve_upgrade_request(request_id):
+
+    request = UpgradeRequest(id = request_id)
+    request.status = "Approved"
+    print(request)
+    # request.user.role = 1
+    request.save()
+
+
+    flash("Upgrade Request has been approved.")
+
+    return redirect(url_for("user.review_upgrade_requests"))
+
+
+@user_bp.route('/decline_upgrade_request/<request_id>', methods=['POST', 'GET'])
+@login_required
+@check_disable
+@check_maintenance 
+def decline_upgrade_request(request_id):
+
+    request = UpgradeRequest(id = request_id)
+    request.status = "Declined"
+    request.save()
+
+    flash("Upgrade Request has been declined.")
+    
+
+    return redirect(url_for("user.review_upgrade_requests"))

@@ -6,8 +6,8 @@
 {% block main %}
 
 
-{% for item_requests in my_buy_requests  %}
-{% for request in item_requests %}
+
+{% for request in upgrade_requests %}
 
 <div class="row my-1 justify-content-between">
   <div class="col-lg-10 col-md-12 col-sm-12 align-self-center">
@@ -20,17 +20,13 @@
           </h5>
           <hr style="height:2px;border-width:0;color:gray;background-color:gray">
           <p class="card-text">
-          <h5><b>Username : </b>{{request.user.username}}</h5>
-          <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-          <h5><b>Title : </b>{{request.item.title}}</h5>
-          <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-          <h5><b>Price : </b> {{request.item.price}} JDs </h5>
+          <h5><b>Username : </b>{{request["user"]['username']}}</h5>
           <hr style="height:2px;border-width:0;color:gray;background-color:gray">
           <h5><b>Status : </b> {{request.status}}  </h5>
           <hr style="height:2px;border-width:0;color:gray;background-color:gray">
           </p>
-          <a href="{{url_for('user.approve_buy_request' , item_id = request.item.id , request_id = request.id)}}" class="btn btn-primary text-white">Approve</a>
-          <a href="{{url_for('user.decline_buy_request' , item_id = request.item.id , request_id = request.id)}}" class="btn btn-danger text-white">Decline</a>
+          <a href="{{url_for('user.approve_upgrade_request', request_id = request.id)}}" class="btn btn-primary text-white">Approve</a>
+          <a href="{{url_for('user.decline_upgrade_request', request_id = request.id)}}" class="btn btn-danger text-white">Decline</a>
           
         </div>
       </div>
@@ -39,7 +35,7 @@
 </div>
 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 {% endfor %}
-{% endfor %}
+
 
 
 {% endblock %}
