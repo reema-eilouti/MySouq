@@ -74,7 +74,7 @@ def signup():
 
         user.save()
 
-        return redirect(url_for("login.login"))
+        return redirect(url_for("user.login"))
 
     return render_template("user/signup.html", form = signup_form)    
 
@@ -432,7 +432,7 @@ def decline_buy_request(item_id, request_id):
 @check_maintenance 
 def upgrade_request():
 
-    upgrade_request = UpgradeRequest(user = session['user']['username'], status = "Pending")
+    upgrade_request = UpgradeRequest(user = session['user']['id'], status = "Pending")
 
     upgrade_request.save()
 
@@ -443,14 +443,17 @@ def upgrade_request():
 
 
 @user_bp.route('/review_upgrade_requests', methods=['POST', 'GET'])
-# @login_required
+@login_required
 @check_disable
 @check_maintenance 
 def review_upgrade_requests():
 
-    
-    upgrade_requests = UpgradeRequest.objects()
-   
+    users = User.objects()
+
+    upgrade_requests = []
+
+    for user in users:
+        upgrade_requests.append(UpgradeRequest.objects(user = user).all())
 
     return render_template("user/review_upgrade_requests.html", upgrade_requests = upgrade_requests)
 
@@ -461,13 +464,13 @@ def review_upgrade_requests():
 @check_maintenance 
 def approve_upgrade_request(request_id):
 
-    request = UpgradeRequest(id = request_id)
+    request = UpgradeRequest.objects(id = request_id).first()
     request.status = "Approved"
-    print(request)
-    # request.user.role = 1
     request.save()
 
-
+    request.user.role = 1
+    request.user.save()
+    
     flash("Upgrade Request has been approved.")
 
     return redirect(url_for("user.review_upgrade_requests"))
@@ -479,7 +482,7 @@ def approve_upgrade_request(request_id):
 @check_maintenance 
 def decline_upgrade_request(request_id):
 
-    request = UpgradeRequest(id = request_id)
+    request = UpgradeRequest.objects(id = request_id).first()
     request.status = "Declined"
     request.save()
 

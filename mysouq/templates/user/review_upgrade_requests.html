@@ -7,8 +7,8 @@
 
 
 
-{% for request in upgrade_requests %}
-
+{% for user_request in upgrade_requests %}
+{% for request in user_request %}
 <div class="row my-1 justify-content-between">
   <div class="col-lg-10 col-md-12 col-sm-12 align-self-center">
     <div class="col-4">
@@ -20,7 +20,7 @@
           </h5>
           <hr style="height:2px;border-width:0;color:gray;background-color:gray">
           <p class="card-text">
-          <h5><b>Username : </b>{{request["user"]['username']}}</h5>
+          <h5><b>Username : </b>{{request.user.username}}</h5>
           <hr style="height:2px;border-width:0;color:gray;background-color:gray">
           <h5><b>Status : </b> {{request.status}}  </h5>
           <hr style="height:2px;border-width:0;color:gray;background-color:gray">
@@ -35,7 +35,7 @@
 </div>
 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 {% endfor %}
-
+{% endfor %}
 
 
 {% endblock %}
