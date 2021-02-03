@@ -11,28 +11,21 @@
     {% for request in requests_list %}
   <div class="card" style="width: 18rem;">
 
-    <img class="card-img-top" src="../../static/images/logi.png" alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">
-        <h5
-          style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-          <b> HRD-Souq</b></h5>
-      </h5>
-      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-      <p class="card-text">
-      <h5><b>Title : </b>{{request.item.title}}</h5>
-      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-      <h5><b>Description : </b>{{request.item.description}}</h5>
-      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-      <h5><b>Price : </b> {{request.item.price}} JDs </h5>
-      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-      <h5><b>Cateogory : </b> {{request.item.category}} </h5>
-      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-      <h5><b>Cateogory : </b> {{request.item.date}} </h5>
-      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-      <h5><b>Status : </b> {{request.status}} </h5>
-      <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-      </p>
+    <img class="card-img-top" src="../../static/images/items.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h4 class="card-title">{{request.item.title}}</h4>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <p class="card-text"><h6>{{request.item.description}}</h6>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h5>{{request.item.price}} JDs</h5>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h5>"{{request.item.category}}"</h5>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h6>{{request.item.date}}</h6>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h5>{{request.status}}</h5>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    </p>
       
 
     </div>

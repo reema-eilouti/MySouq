@@ -429,7 +429,7 @@ def decline_buy_request(item_id, request_id):
 
 
 @user_bp.route('/upgrade_request', methods=['POST', 'GET'])
-# @login_required
+@login_required
 @check_disable
 @check_maintenance 
 def upgrade_request():
@@ -461,7 +461,7 @@ def review_upgrade_requests():
 
 
 @user_bp.route('/approve_upgrade_request/<request_id>', methods=['POST', 'GET'])
-# @login_required
+@login_required
 @check_disable
 @check_maintenance 
 def approve_upgrade_request(request_id):
@@ -487,6 +487,9 @@ def decline_upgrade_request(request_id):
     request = UpgradeRequest.objects(id = request_id).first()
     request.status = "Declined"
     request.save()
+
+    request.user.role = 0
+    request.user.save()
 
     flash("Upgrade Request has been declined.")
     
