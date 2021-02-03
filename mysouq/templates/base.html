@@ -57,14 +57,16 @@
                             <a class="dropdown-item" href="{{url_for('user.upgrade_request')}}">Request Upgrade</a>
                             {% endif %}
                             {% if session['user']['role'] == 1 %}
+                            <a class="dropdown-item" href="{{url_for('item.add_item')}}">Add Item</a>
                             <a class="dropdown-item" href="{{url_for('user.review_buy_requests')}}">Review Buy Requests</a>
                             {% endif %}
                             {% if session['user']['role'] == 2 %}
+                            <a class="dropdown-item" href="{{url_for('user.add_category')}}">Add Category</a>
+                            <a class="dropdown-item" href="{{url_for('user.display_users')}}">View Users</a>
                             <a class="dropdown-item" href="{{url_for('user.maintenance_mode')}}">Maintenance On</a>
                             <a class="dropdown-item" href="{{url_for('user.maintenance_mode_off')}}">Maintenance Off</a>
                             <a class="dropdown-item" href="{{url_for('user.review_upgrade_requests')}}">Review Upgrade Requests</a>
                             {% endif %}
-                            <a class="dropdown-item" href="{{url_for('user.logout')}}">Logout</a>
                         </div>
                     </li>
 
@@ -127,9 +129,9 @@
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
                     <h5>{{item.price}} JDs</h5>
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
-                    <h5>{{item.category}}</h5>
+                    <h5>"{{item.category}}"</h5>
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
-                    <h5>{{item.date}}</h5>
+                    <h6>{{item.date}}</h6>
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
                     </p>
 

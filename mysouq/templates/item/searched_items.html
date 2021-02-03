@@ -7,33 +7,41 @@
 
 {% block main %}
 
-<P>Found {{items | count}} result from {{search_keyword}}</P>
+<P>Found {{items | count}} Results For '{{search_keyword}}'</P>
 
 <center>
     {% if items %}
     {% for item in items %}
+            <div class="card" style="width: 18rem;">
 
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="../../static/images/haha.jpg" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">
-                <h5><b>HRD-Souq.com</b></h5>
-            </h5>
+                <img class="card-img-top" src="../../static/images/items.png" alt="Card image cap">
+                <div class="card-body">
+                    <h4 class="card-title">{{item.title}}</h4>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <p class="card-text"><h6>{{item.description}}</h6>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h5>{{item.price}} JDs</h5>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h5>"{{item.category}}"</h5>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h6>{{item.date}}</h6>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    </p>
+
+                    <a href="{{url_for('item.buy_item', item_id = item.id)}}" class="btn btn-secondary text-white">Buy</a>
+                    <ol class="mr-5">
+                        <a href="{{url_for('item.add_favorite', item_id = item.id)}}"><i style="color: grey;" class="fas fa-star"
+                                title="Favorite"></i></a>
+                        <a href="{{url_for('item.edit_item', item_id = item.id)}}"><i style="color: grey;" class="far fa-edit"
+                                title="Edit"></i></a>
+                        <a href="{{url_for('item.delete_item', item_id = item.id)}}"><i style="color: grey;" class="fas fa-trash-alt"
+                                title="Delete"></i></a>
+                    </ol>
+                </div>
+            </div>
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <p class="card-text">
-            <h5><b>Title : </b>{{item.title}}</h5>
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <h5><b>Description : </b>{{item.description}}</h5>
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            <h5><b>Price : </b> {{item.price}} JDs </h5>
-            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-            </p>
-            <a href="#" class="btn btn-primary text-white">Buy</a>
-        </div>
-    </div>
-    {% endfor %}
-    {% else %}
-    <P>Nothing found with the word "{{search_keyword}}"</P>
+            <br>
+            {% endfor %}
     {% endif %}
 </center>
 

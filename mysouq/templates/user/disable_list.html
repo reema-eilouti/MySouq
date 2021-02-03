@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Display Users{% endblock %}
+{% block title %}Disable List{% endblock %}
 
 
 {% block main %}
@@ -15,7 +15,7 @@
                 <th scope="col">{{users | count}} Users</th>
                 <th scope="col">Username</th>
                 <th scope="col">Email</th>
-                <th scope="col">Delete/Disable</th>
+                <th scope="col">Unlock</th>
 
 
             </tr>
@@ -23,14 +23,11 @@
         <tbody>
             {% for user in users %}
             <tr>
-
-
                 <th scope="row">{{loop.index}}</th>
                 <td>{{user.username}}</td>
                 <td>{{user.email}}</td>
                 <td>
-                    <a href="{{url_for('user.delete_user', user_id = user.id)}}"><i style="color: grey;" class="fas fa-user-times ml-4" title="Delete User"></i></a>
-                   / <a href="{{url_for('user.disable_user', user_id = user.id)}}"><i style="color: grey;" class="fas fa-user-slash" title="Disable User"></i></a>
+                    <a href="{{url_for('user.unlock_user', user_id = user.id)}}"><i style="color: grey;" class="fas fa-unlock ml-3" title="Unlock"></i></a>
                 </td>
 
             </tr>
@@ -38,8 +35,15 @@
 
         </tbody>
     </table>
-    <a href="{{url_for('user.disable_list')}}"><button type="button" class="btn btn-secondary">Disable List</button></a>
+    <br><br>
+    {% if users %}
+
+    <a href="{{url_for('user.display_users')}}"><button type="button" class="btn btn-secondary">Users List</button></a>
 
    </div></div>
+   {% else %}
+   <P>No Blocked Users, back to<a href="{{url_for('user.display_users')}}"> Users List</a> </P>
+  
+   {% endif %}
 </center>
 {% endblock %}
