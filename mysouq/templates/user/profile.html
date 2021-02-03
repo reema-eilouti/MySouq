@@ -5,32 +5,17 @@
 
 {% block main %}
 
-
-<center>
-    <a href="{{url_for('user.edit_profile')}}"> <button type="button" class="btn btn-secondary">Edit Profile</button></a>
-    <a href="{{url_for('user.change_password')}}"><button type="button" class="btn btn-secondary">Change Password</button></a>
-    <a href="{{url_for('user.request_upgrade')}}"><button type="button" class="btn btn-secondary">Request Upgrade</button></a>
-    <a href="{{url_for('user.view_favorites')}}"><button type="button" class="btn btn-secondary">Favorites List</button></a>
-    <a href="{{url_for('user.buy_requests')}}"><button type="button" class="btn btn-secondary">Buy Requests</button></a>
-    <a href="{{url_for('user.maintenance_mode')}}"><button type="button" class="btn btn-secondary">Maintenance On</button></a>
-    <a href="{{url_for('user.maintenance_mode_off')}}"><button type="button" class="btn btn-secondary">Maintenance Off</button></a>
-    <a href="{{url_for('user.review_buy_requests')}}"><button type="button" class="btn btn-secondary">Review Buy Requests</button></a>
-    <a href="{{url_for('user.upgrade_request')}}"><button type="button" class="btn btn-secondary">Upgrade Request</button></a>
-    <a href="{{url_for('user.review_upgrade_requests')}}"><button type="button" class="btn btn-secondary">Review Upgrade Requests</button></a>
-    <br> <br>
-
     <div class="card" style="width: 18rem;">
-        <img src="../../static/images/136.png" class="card-img-top" alt="...">
+        <img src="../../static/images/person.png" class="card-img-top" alt="...">
         <div class="card-body">
-            <h5 class="card-title">HRD-Souq</h5>
-            <p class="card-text">Your Profile Details.</p>
+            <h5 class="card-title">Hello {{user.username}}!</h5>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">username: {{user.username}}</li>
-            <li class="list-group-item">Email: {{user.email}}</li>
-            <li class="list-group-item">Birthday: {{user.birthday}}</li>
+            <li class="list-group-item"><b>username:</b> {{user.username}}</li>
+            <li class="list-group-item"><b>email:</b> {{user.email}}</li>
+            <li class="list-group-item"><b>birthday:</b> {{user.birthday}}</li>
         </ul>
 
     </div>
-</center>
+
 {% endblock %}

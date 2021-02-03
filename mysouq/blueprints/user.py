@@ -50,7 +50,9 @@ def check_maintenance(function):
 
 @user_bp.route('/', methods=['POST', 'GET'])
 @user_bp.route('/home', methods=['POST', 'GET'])
-# @check_maintenance 
+@login_required
+@check_disable
+@check_maintenance
 def home():
 
     items = Item.objects()
@@ -127,7 +129,7 @@ def show_session():
 @check_maintenance
 def profile():
 
-    user = User.objects(id = session["user"]['id']).first()
+    user = User.objects(id = session['user']['id']).first()
 
     return render_template("user/profile.html", user = user)
 

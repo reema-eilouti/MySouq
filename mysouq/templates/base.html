@@ -24,48 +24,77 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('user.home')}}">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('user.profile')}}">Profile</a>
-                    </li>
                     {% if session['user'] %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{{url_for('user.profile')}}" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Profile
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{{url_for('user.profile')}}"><b>{{session['user'].username}}</b> Profile</a>
+                            {% if session['user']['role'] == 0 %}
+                            <a class="dropdown-item" href="{{url_for('user.view_favorites')}}">Favorites List</a>
+                            <a class="dropdown-item" href="{{url_for('user.buy_requests')}}">Buy Requests</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ml-auto mr-4 topnav">
+
+                    {% if session['user'] %}
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Settings
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Edit Profile</a>
-                            <a class="dropdown-item" href="#">Change Password</a>
-                            <a class="dropdown-item" href="#">LogOut</a>
+                            <a class="dropdown-item" href="{{url_for('user.edit_profile')}}">Edit Profile</a>
+                            <a class="dropdown-item" href="{{url_for('user.change_password')}}">Change Password</a>
+                            {% if session['user']['role'] == 0 %}
+                            <a class="dropdown-item" href="{{url_for('user.upgrade_request')}}">Request Upgrade</a>
+                            {% endif %}
+                            {% if session['user']['role'] == 1 %}
+                            <a class="dropdown-item" href="{{url_for('user.review_buy_requests')}}">Review Buy Requests</a>
+                            {% endif %}
+                            {% if session['user']['role'] == 2 %}
+                            <a class="dropdown-item" href="{{url_for('user.maintenance_mode')}}">Maintenance On</a>
+                            <a class="dropdown-item" href="{{url_for('user.maintenance_mode_off')}}">Maintenance Off</a>
+                            <a class="dropdown-item" href="{{url_for('user.review_upgrade_requests')}}">Review Upgrade Requests</a>
+                            {% endif %}
+                            <a class="dropdown-item" href="{{url_for('user.logout')}}">Logout</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('item.search_items')}}">Search</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{session['user'].username}}
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Profile</a>
-                            <a class="dropdown-item" href="#">Change Password</a>
-                            <a>
-                                <hr class="dropdown-divider">
-                            </a>
-                            <a class="dropdown-item" href="#">Log out</a>
-                        </div>
-                    </li>
-                    {% endif %}
-                </ul>
 
+                    {% endif %}
+
+                    {% if not session['user'] %}
+          
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('user.signup')}}">SignUp <i class="fas fa-user-plus" title="SignUp"></i></a>
+                    </li>
+                    
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('user.login')}}" >Login <i class="fas fa-sign-in-alt"  title="Login"></i></a>
+                    </li>
+                    {% endif %} 
+          
+          
+                    {% if session['user'] %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('user.logout')}}">Log Out <i class="fas fa-sign-out-alt" title="Log Out"></i></a>
+                    </li>
+                    {% endif %} 
+          
+                  </ul>
             </div>
 
         </nav>
     </header>
 
     <main class="mt-5">
-
         <section class="container my-5">
             {% for message in get_flashed_messages() %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -76,66 +105,50 @@
             </div>
             {% endfor %}
         </section>
-
-        
-
         <section class="container">
-            {% block main %}
-
             <center>
+            {% block main %}
+                <div style="left: 200px;">
                 <form action="{{ url_for('item.search_items') }}" method="POST">
                     <input class="form-control form-control-lg" type="search" name="search_keyword" style="width: 25%;"
-                        placeholder=" Enter Keywords To Search" aria-label="Search"><button
-                        class="btn btn-secondary mt-1">Search </button>
+                        placeholder="Enter Keywords To Search" aria-label="Search">
+                        <button class="btn btn-secondary mt-1">Search</button>
                 </form>
-            </center>
-
+                </div>
+                <br>
             {% for item in items %}
             <div class="card" style="width: 18rem;">
 
-                <ol class="mr-5">
-                    <a href="{{url_for('item.add_favorite', item_id = item.id)}}"><i style="color: grey;" class="fas fa-star"
-                            title="Favorite"></i></a>
-                    <a href="{{url_for('item.edit_item', item_id = item.id)}}"><i class="far fa-edit"
-                            title="Edit"></i></a>
-                    <a href="{{url_for('item.delete_item', item_id = item.id)}}"><i class="fas fa-trash-alt"
-                            title="Delete"></i></a>
-                </ol>
-
-                <img class="card-img-top" src="../../static/images/logi.png" alt="Card image cap">
+                <img class="card-img-top" src="../../static/images/items.png" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">
-                        <h5
-                            style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                            <b> fere3_el_sabe3-Souq</b>
-                        </h5>
-                    </h5>
-                    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-                    <p class="card-text">
-                    <h5><b>Title : </b>{{item.title}}</h5>
-                    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-                    <h5><b>Description : </b>{{item.description}}</h5>
-                    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-                    <h5><b>Price : </b> {{item.price}} JDs </h5>
-                    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-                    <h5><b>Cateogory : </b> {{item.category}} </h5>
-                    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-                    <h5><b>Cateogory : </b> {{item.date}} </h5>
-                    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+                    <h4 class="card-title">{{item.title}}</h4>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <p class="card-text"><h6>{{item.description}}</h6>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h5>{{item.price}} JDs</h5>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h5>{{item.category}}</h5>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h5>{{item.date}}</h5>
+                    <hr style="height:1px; border-width:0; color:gray; background-color:gray">
                     </p>
 
-                    {% if item %}
                     <a href="{{url_for('item.buy_item', item_id = item.id)}}" class="btn btn-secondary text-white">Buy</a>
-                    {% else %}
-                    <a class="btn btn-primary text-white disabled">Buy</a>
-                    {% endif %}
-
+                    <ol class="mr-5">
+                        <a href="{{url_for('item.add_favorite', item_id = item.id)}}"><i style="color: grey;" class="fas fa-star"
+                                title="Favorite"></i></a>
+                        <a href="{{url_for('item.edit_item', item_id = item.id)}}"><i style="color: grey;" class="far fa-edit"
+                                title="Edit"></i></a>
+                        <a href="{{url_for('item.delete_item', item_id = item.id)}}"><i style="color: grey;" class="fas fa-trash-alt"
+                                title="Delete"></i></a>
+                    </ol>
                 </div>
             </div>
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <br>
             {% endfor %}
             {% endblock %}
+        </center>
         </section>
 
     </main>

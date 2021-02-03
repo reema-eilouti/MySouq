@@ -33,11 +33,11 @@ def create_app(test_config=None):
         user_3 = User(username='salma_93', password = pbkdf2_sha256.hash('1234'), birthday = "1993-07-23 14:09:01", email = 'salma@gmail.com', role = 1 ).save()
         
 
-        item_1 = Item(user = user_3, title = "First", description = 'First', date = "2009-12-30 14:09:01", price = "5" , category = "clothes").save()
+        item_1 = Item(user = user_3, title = "Scarf", description = 'New, Handmade Knitted Scarf, Blue and Black, Size: Medium', date = "2021-01-15 14:09:01", price = "5" , category = "Clothes").save()
 
-        item_2 = Item(user = user_3, title = "Sec" , description = 'First', date = "2020-12-30 14:09:01", price = "8" , category = "clothes").save()
+        item_2 = Item(user = user_3, title = "iPhone XR" , description = 'Used, In Good Condition', date = "2021-01-30 03:40:26", price = "700" , category = "Digital Devices").save()
 
-        item_3 = Item(user = user_3, title = "Third", description = 'First', date = "2011-12-30 14:09:01", price = "4" , category = "clothes").save()
+        item_3 = Item(user = user_3, title = "Toyota Prius 2010", description = 'Used, White, 165000KM, 1800CC, Hybrid', date = "2021-02-04 18:22:06", price = "9500" , category = "Vehicles").save()
         
 
 
