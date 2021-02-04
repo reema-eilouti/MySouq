@@ -74,7 +74,7 @@ def home():
 
 @user_bp.route("/signup", methods = ['POST', 'GET'])
 def signup():
-    """This function creates an account """
+    """This function creates an account for a new user."""
 
     signup_form = SignUpForm()
 
@@ -96,6 +96,7 @@ def signup():
 
 @user_bp.route('/login', methods=['POST', 'GET'])
 def login():
+    """This function validates the user's login credentials then takes them to the Home page."""
 
     login_form = LoginForm()
 
@@ -124,6 +125,7 @@ def login():
 
 @user_bp.route('/logout')
 def logout():
+    """This function removes the logged in user's information from the Session dictionary."""
 
     session.clear()
 
@@ -132,6 +134,9 @@ def logout():
 
 @user_bp.route('/session')
 def show_session():
+    """This function prints out the Session dictionary.
+    This is only accessable through the URL and is used by the site developers for testing."""
+
     return dict(session)
 
 
@@ -141,6 +146,7 @@ def show_session():
 @check_disable
 @check_maintenance
 def profile():
+    """This function displays the logged in user's information."""
 
     user = User.objects(id = session['user']['id']).first()
 
@@ -152,6 +158,7 @@ def profile():
 @check_disable
 @check_maintenance
 def edit_profile():
+    """This function provides the user with a form to edit their information."""
 
     user = User.objects(id = session['user']['id']).first()
 
@@ -188,6 +195,8 @@ def edit_profile():
 @check_disable
 @check_maintenance
 def change_password():
+    """This function allows the user to change/update their password
+    It is a seperate functionality from "Edit Profile" for extra validation and seperation of concerns."""
 
     user = User.objects(id=session['user']['id']).first()
 
@@ -210,33 +219,13 @@ def change_password():
     return render_template("user/change_password.html", form=change_password_form)
 
 
-@user_bp.route('/request_upgrade', methods=['GET', 'POST'])
-@login_required
-@check_disable
-@check_maintenance
-def request_upgrade():
-
-    request = UpgradeRequest.objects(user = session['user']['id']).first()
-
-    if not request:
-
-        upgrade_request = UpgradeRequest(user = session['user']['id'], status = "Pending")
-
-        upgrade_request.save()
-
-    else:
-
-        flash("You have already requested an upgrade.")
-
-    return redirect(url_for('user.profile'))
-
-
 
 @user_bp.route('/favorites_list', methods=['GET', 'POST'])
 @login_required
 @check_disable
 @check_maintenance
 def view_favorites():
+    """This function lets the Buyer user see their favorited items."""
 
     favorite_items = User.objects(id = session['user']['id']).get().favorites_list
     
@@ -255,6 +244,8 @@ def view_favorites():
 @check_disable
 @check_maintenance
 def add_category():
+    """This function is accessed by the Admin only, it lets them add a new category for items.
+    The changes made here can be viewed when a Seller user chooses a category when adding a new item."""
 
     add_category_form = AddCategoryForm()
 
@@ -280,6 +271,9 @@ def add_category():
 @check_disable
 @check_maintenance
 def display_users():
+    """This function is for the Admin only (if statement in the template)
+    It lets them preview all the users and their status.
+    Also, it allows the admin to Delete or Disable any user(s)."""
 
     users = User.objects()
 
@@ -291,6 +285,7 @@ def display_users():
 @check_disable
 @check_maintenance
 def delete_user(user_id):
+    """This function removes the user specified from the database."""
 
     user = User.objects(id = user_id).first()
 
@@ -306,6 +301,8 @@ def delete_user(user_id):
 @check_disable
 @check_maintenance    
 def disable_user(user_id) :
+    """This function sets the "disable" attribute of the user to "True".
+    Such user can't access anything on the site (because of the decorator)."""
     
     user = User.objects(id = user_id).first()
     
@@ -323,6 +320,8 @@ def disable_user(user_id) :
 @check_disable
 @check_maintenance    
 def unlock_user(user_id) :
+    """This function sets the "disable" attribute of the user to "False".
+    Such user can now use the site as usual with no restrictions."""
     
     user = User.objects(id = user_id).first()
     
@@ -339,7 +338,9 @@ def unlock_user(user_id) :
 @login_required
 @check_disable
 @check_maintenance    
-def maintenance_mode() :
+def maintenance_mode():
+    """This function sets the "maintenance" attribute of all users to "True".
+    All users will see the Maintenance Page when trying to access any page on the site."""
 
     User.objects(role = 0 and 1).update(maintenance = True) 
 
@@ -352,7 +353,9 @@ def maintenance_mode() :
 @login_required
 @check_disable
 @check_maintenance    
-def maintenance_mode_off() :
+def maintenance_mode_off():
+    """This function sets the "maintenance" attribute of all users to "False".
+    All users will be able to access any page on the site normally."""
     
     User.objects(role = 0 and 1).update(maintenance = False) 
 
@@ -366,6 +369,7 @@ def maintenance_mode_off() :
 @check_disable
 @check_maintenance  
 def disable_list():
+    """This function can be accessed by the Admin user to view which users they have locked(disable)."""
 
     users = User.objects(disable = True)
 
@@ -377,6 +381,7 @@ def disable_list():
 @check_disable
 @check_maintenance 
 def buy_requests():
+    """This function is accessed by the Buyer user to view their Buy Requests and their status."""
 
     requests_list = BuyRequest.objects(user = session['user']['id'])
 
@@ -388,6 +393,8 @@ def buy_requests():
 @check_disable
 @check_maintenance 
 def review_buy_requests():
+    """This function is accessed by the Seller user to display the Buy Requests on their items.
+    There they can choose to Approve or Decline a request."""
 
     current_user = User.objects(id = session['user']['id']).first()
 
@@ -408,6 +415,8 @@ def review_buy_requests():
 @check_disable
 @check_maintenance 
 def approve_buy_request(item_id, request_id):
+    """This function sets the "status" of a Buy Request to 'Approved'.
+    Also, sets the "sold" attribute of the item to 'True'."""
 
     item = Item.objects(id = item_id).first()
     item.sold = True
@@ -428,6 +437,7 @@ def approve_buy_request(item_id, request_id):
 @check_disable
 @check_maintenance 
 def decline_buy_request(item_id, request_id):
+    """This function sets the "status" of a Buy Request to 'Declined'."""
 
     Item.objects(id = item_id).update_one(unset__buy_requests_list = request_id)
     
@@ -446,12 +456,23 @@ def decline_buy_request(item_id, request_id):
 @check_disable
 @check_maintenance 
 def upgrade_request():
+    """This function is accessed when a Buyer user wants to become a Seller user.
+    The function creates a request of type upgrade with a "Pending" status for them."""
 
-    upgrade_request = UpgradeRequest(user = session['user']['id'], status = "Pending")
+    request = UpgradeRequest.objects(user = session['user']['id']).first()
 
-    upgrade_request.save()
+    if not request:
 
-    flash("Upgrade Request has been sent.")
+        upgrade_request = UpgradeRequest(user = session['user']['id'], status = "Pending")
+
+        upgrade_request.save()
+
+        flash("Upgrade Request has been sent.")
+
+    else:
+
+        flash("You have already sent an Upgrade Request.")
+
 
     return redirect(url_for("user.profile"))
 
@@ -462,6 +483,7 @@ def upgrade_request():
 @check_disable
 @check_maintenance 
 def review_upgrade_requests():
+    """This function is available for the Admin user to preview Upgrade Requests to choose to Approve or Decline."""
 
     users = User.objects()
 
@@ -478,6 +500,8 @@ def review_upgrade_requests():
 @check_disable
 @check_maintenance 
 def approve_upgrade_request(request_id):
+    """This function sets the "status" of an Upgrade Request to 'Approved'.
+    Also, sets the "role" of the user to '1' (Seller)."""
 
     request = UpgradeRequest.objects(id = request_id).first()
     request.status = "Approved"
@@ -496,6 +520,8 @@ def approve_upgrade_request(request_id):
 @check_disable
 @check_maintenance 
 def decline_upgrade_request(request_id):
+    """This function sets the "status" of an Upgrade Request to 'Declined'.
+    Also, sets the "role" of the user to '0' (Buyer). Just in case the Admin changed their mind :P"""
 
     request = UpgradeRequest.objects(id = request_id).first()
     request.status = "Declined"
