@@ -137,6 +137,7 @@
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
                     <h6>{{item.date}}</h6>
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h7>Added by {{item.user.username}}</h7>
                     </p>
 
                     <a href="{{url_for('item.buy_item', item_id = item.id)}}" class="btn btn-secondary text-white">Buy</a>
@@ -163,9 +164,10 @@
 
     </main>
 
-    <footer style="background-color:rgb(236, 234, 234); color: grey; padding: 10px; position:fixed; left: 0; bottom: 0; width: 100%; text-align: center;">
-        This Web Application was created by Reema on January/2021.
+    <footer style="background-color:rgb(236, 234, 234); color: grey; padding: 1px; position:fixed; left: 0; bottom: 0; width: 100%; text-align: center;">
+        This Web Application was built by Reema on January/2021.
     </footer>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

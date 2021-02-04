@@ -11,7 +11,10 @@
 
 <center>
     {% if items %}
+    <div class="container">
+        <div class="row align-items-start">
     {% for item in items %}
+    <div class="col">
             <div class="card" style="width: 18rem;">
 
                 <img class="card-img-top" src="../../static/images/items.jpg" alt="Card image cap">
@@ -26,6 +29,7 @@
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
                     <h6>{{item.date}}</h6>
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h7>Added by {{item.user.username}}</h7>
                     </p>
 
                     <a href="{{url_for('item.buy_item', item_id = item.id)}}" class="btn btn-secondary text-white">Buy</a>
@@ -41,7 +45,10 @@
             </div>
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <br>
+        </div>
             {% endfor %}
+        </div>
+    </div>
     {% endif %}
 </center>
 

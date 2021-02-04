@@ -55,25 +55,50 @@ def edit_item(item_id):
 
     if edit_item_form.validate_on_submit():
 
-        item.title = edit_item_form.title.data
-        item.description = edit_item_form.description.data
-        item.price = edit_item_form.price.data
-        item.category = edit_item_form.category.data
-        
-        item.save()
+        item_user = item.user
 
-        flash("Your item has been edited successfully.")
+        user = User.objects(id = session['user']['id']).first()
+
+        if user == item_user :
+
+            item.title = edit_item_form.title.data
+            item.description = edit_item_form.description.data
+            item.price = edit_item_form.price.data
+            item.category = edit_item_form.category.data
+            
+            item.save()
+
+            flash("Your item has been edited successfully.")
+
+        else:
+
+            flash("Action Not Allowed: Editing an item you don't own.")
 
         return redirect(url_for('user.home'))
 
 
     return render_template("item/edit_item.html", form = edit_item_form)    
 
+
     
 @item_bp.route('/delete_item/<item_id>', methods=['GET', 'POST'])
 def delete_item(item_id):
 
-    Item.objects(id = item_id).first().delete()
+    item = Item.objects(id = item_id).first() 
+
+    item_user = item.user
+
+    user = User.objects(id = session['user']['id']).first()
+
+    if user == item_user :
+
+        Item.objects(id = item_id, user = session['user']['id']).first().delete()
+
+        flash('Item has been deleted')
+
+    else: 
+
+        flash("Action Not Allowed: Deleting an item you don't own.")
 
     return redirect(url_for("user.home"))  
 

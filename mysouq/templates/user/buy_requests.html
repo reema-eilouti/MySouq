@@ -7,8 +7,10 @@
 
 <center>
 <br>
-
+<div class="container">
+  <div class="row align-items-start">
     {% for request in requests_list %}
+    <div class="col">
   <div class="card" style="width: 18rem;">
 
     <img class="card-img-top" src="../../static/images/items.jpg" alt="Card image cap">
@@ -25,6 +27,7 @@
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
                     <h5>{{request.status}}</h5>
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h7>Added by {{request.item.user.username}}</h7>
                     </p>
       
 
@@ -32,9 +35,10 @@
   </div>
   <hr style="height:2px;border-width:0;color:gray;background-color:gray">
   <br>
+</div>
   {% endfor %}
-
-
+</div>
+</div>
     {% if not requests_list %}
     <P>No Buy Requests, Do You Want To Buy Any Item?<a href="{{url_for('user.home')}}"> Buy Item</a> </P>
     {% endif %}

@@ -5,9 +5,11 @@
 
 {% block main %}
 
-
+<div class="container">
+  <div class="row align-items-start">
 {% for item_requests in my_buy_requests  %}
 {% for request in item_requests %}
+<div class="col">
       <div class="card" style="width: 18rem;">
         <img class="card-img-top" src="../../static/images/items.jpg" alt="Card image cap">
                 <div class="card-body">
@@ -25,16 +27,18 @@
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
                     <h5>{{request.status}}</h5>
                     <hr style="height:1px; border-width:0; color:gray; background-color:gray">
+                    <h7>Added by {{request.item.user.username}}</h7>
                     </p>
-          <a href="{{url_for('user.approve_buy_request' , item_id = request.item.id , request_id = request.id)}}" class="btn btn-primary text-white">Approve</a>
-          <a href="{{url_for('user.decline_buy_request' , item_id = request.item.id , request_id = request.id)}}" class="btn btn-danger text-white">Decline</a>
+          <a href="{{url_for('user.approve_buy_request' , item_id = request.item.id , request_id = request.id)}}" class="btn btn-secondary text-white">Approve</a>
+          <a href="{{url_for('user.decline_buy_request' , item_id = request.item.id , request_id = request.id)}}" class="btn btn-secondary text-white">Decline</a>
           
         </div>
       </div>
    
 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+</div>
 {% endfor %}
 {% endfor %}
-
-
+</div>
+</div>
 {% endblock %}

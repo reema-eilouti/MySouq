@@ -6,9 +6,11 @@
 {% block main %}
 
 
-
+<div class="container">
+  <div class="row align-items-start">
 {% for user_request in upgrade_requests %}
 {% for request in user_request %}
+<div class="col">
       <div class="card" style="width: 18rem;">
         <img class="card-img-top" src="../../static/images/person.png" alt="Card image cap">
         <div class="card-body">
@@ -24,8 +26,9 @@
         </div>
       </div>
 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+</div>
 {% endfor %}
 {% endfor %}
-
-
+</div>
+</div>
 {% endblock %}
