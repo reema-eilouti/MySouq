@@ -9,8 +9,13 @@ from functools import wraps
 
 user_bp = Blueprint('user', __name__)
 
+# Decorators:
 
 def login_required(function):
+    """Login Decorator: 
+    This function checks whether the user is logged in before accessing a functionality.
+    If not; the user is taken to the Login Page."""
+
     @wraps(function)
     def check(*args, **kwargs):
 
@@ -22,8 +27,11 @@ def login_required(function):
 
     return check
 
-
 def check_disable(function):
+    """Disable Decorator: 
+    This function checks whether the user "disable" attribute is set to "False" before accessing a functionality.
+    If not; then the admin account has set this user's "disable" to "True" and is taken to the Disable Page."""
+
     @wraps(function)
     def check(*args, **kwargs):
 
@@ -34,8 +42,11 @@ def check_disable(function):
     
     return check
 
-
 def check_maintenance(function):
+    """Maintenance Decorator: 
+    This function checks whether the user "maintenance" attribute is set to "False" before accessing a functionality.
+    If not; then the admin account has set all users' "maintenance" to "True" and are taken to the Maintenance Page."""
+
     @wraps(function)
     def check(*args, **kwargs):
 
@@ -54,14 +65,16 @@ def check_maintenance(function):
 @check_disable
 @check_maintenance
 def home():
+    """This function previews the main home page of the site, it displays all the items to be sold for all users."""
 
-    items = Item.objects()
+    items = Item.objects(sold = False)
 
     return render_template('base.html', items = items)
 
 
 @user_bp.route("/signup", methods = ['POST', 'GET'])
 def signup():
+    """This function creates an account """
 
     signup_form = SignUpForm()
 

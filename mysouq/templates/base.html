@@ -118,6 +118,12 @@
                 </form>
                 </div>
                 <br>
+                <a href="{{url_for('item.sort_by_date')}}" class="btn btn-secondary text-white">Sort By Date</a>
+                <a href="{{url_for('item.sort_by_date')}}" class="btn btn-secondary text-white">Sort By Price</a>
+
+                <br>
+
+                <br>
                 <div class="container">
                     <div class="row align-items-start">
                       
@@ -140,14 +146,18 @@
                     <h7>Added by {{item.user.username}}</h7>
                     </p>
 
+                    {% if session['user']['role'] == 0 %}
                     <a href="{{url_for('item.buy_item', item_id = item.id)}}" class="btn btn-secondary text-white">Buy</a>
                     <ol class="mr-5">
                         <a href="{{url_for('item.add_favorite', item_id = item.id)}}"><i style="color: grey;" class="fas fa-star"
-                                title="Favorite"></i></a>
+                                title="Add to Favorite"></i></a>
+                                {% endif %}
+                                {% if session['user']['role'] == 1 %}
                         <a href="{{url_for('item.edit_item', item_id = item.id)}}"><i style="color: grey;" class="far fa-edit"
                                 title="Edit"></i></a>
                         <a href="{{url_for('item.delete_item', item_id = item.id)}}"><i style="color: grey;" class="fas fa-trash-alt"
                                 title="Delete"></i></a>
+                                {% endif %}
                     </ol>
                 </div>
             </div>

@@ -104,7 +104,7 @@ def delete_item(item_id):
 
 
 @item_bp.route('/sort_by_date', methods=['GET', 'POST'])
-def sort_date_items():
+def sort_by_date():
 
     items = Item.objects.order_by('-date')
 
@@ -112,7 +112,7 @@ def sort_date_items():
 
 
 @item_bp.route('/sort_by_price', methods=['GET', 'POST'])
-def sort_price_items():
+def sort_by_price():
 
     items = Item.objects.order_by('-price')
 
