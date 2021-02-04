@@ -6,6 +6,10 @@
 {% block main %}
 
 <center>
+    <div class="alert alert-warning" role="alert">
+        Users: {{users | count}} - Buyers: {{buyer_users | count}} - Sellers: {{seller_users | count}} 
+      </div>
+
     <br>
     <div id="b1">
         <div class="col-lg-10 col-md-6 col-lg">

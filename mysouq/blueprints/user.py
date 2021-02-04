@@ -277,7 +277,11 @@ def display_users():
 
     users = User.objects()
 
-    return render_template('user/display_users.html', users = users)
+    buyer_users = User.objects(role = 0)
+
+    seller_users = User.objects(role = 1)
+
+    return render_template('user/display_users.html', users = users, buyer_users = buyer_users, seller_users = seller_users)
 
 
 @user_bp.route('/delete_user/<user_id>', methods=['POST', 'GET'])
